@@ -1,20 +1,25 @@
 <?php
 
 // display error codes and messages
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-    session_start();
+session_start();
 
-    if ( isset($_POST['selectedItemValue']) ) {
-       
-        // code to add item
-    }
+$_SESSION['order'] = array();
+$_SESSION['orderTotal'] = 0;
+
+
+if (isset($_POST['selectedItemValue'])) {
+
+    // code to add item
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,6 +27,7 @@
     <title>S&S POS</title>
     <link rel="stylesheet" href="./static/css/style.css">
 </head>
+
 <body>
     <h1>
         <span style="color:red">Select</span> and <span style="color:blue">Save</span>
@@ -39,18 +45,19 @@
 
     <hr>
 
-    <section >
+    <section>
         <form class="items" action=" <?php $_SERVER['PHP_SELF'] ?>" method="post">
             <?php
-                for ($i=0; $i < 3; $i++) { 
-            ?>   
+            for ($i = 0; $i < 3; $i++) {
+                ?>
                 <button type="submit" name="selectedItemValue" value="" class="item">
                     <h3>
-                        Dummy Item <?php echo $i; ?>
+                        Dummy Item
+                        <?php echo $i; ?>
                     </h3>
                 </button>
-            <?php
-                }
+                <?php
+            }
             ?>
         </form>
     </section>
@@ -64,4 +71,5 @@
 
 
 </body>
+
 </html>

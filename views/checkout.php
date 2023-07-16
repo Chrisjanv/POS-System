@@ -1,21 +1,24 @@
 <?php
 
 // display error codes and messages
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-    session_start();
+session_start();
+
+
 
 // redirect back to index if payment button is selected
-    if (isset($_GET['payment'])) {
-        session_unset();
-        header("Location: ./../");
-    }
+if (isset($_GET['payment'])) {
+    session_unset();
+    header("Location: ./../");
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,6 +26,7 @@
     <title>S&S POS | Pay</title>
     <link rel="stylesheet" href="./../static/css/style.css">
 </head>
+
 <body>
     <h1>
         <span style="color:red">Select</span> and <span style="color:blue">Save</span>
