@@ -70,26 +70,25 @@ if (isset($_POST['selectedItemValue'])) {
     <hr>
 
     <section>
-        <form class="items" action=" <?php $_SERVER['PHP_SELF'] ?>" method="post">
+    <form class="items" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
             <?php
-            require './data/data.php';
-            foreach ($items as $item) {
+            require './model/MenuItem.php';
+
+            $menuItems = MenuItem::getMenuItems();
+
+            foreach ($menuItems as $item) {
                 ?>
-
-                <button type="submit" name="selectedItemValue" value="<?php echo $item['barcode']; ?>" class="item">
-                    <h3>
-                        <?php echo $item['name']; ?>
-                    </h3>
-                    <p>Price: R
-                        <?php echo $item['price']; ?>
-                    </p>
-                </button>
-
-                <?php
+                <button    type="submit" name="selectedItemValue" value="<?php echo $item->getBarcode(); ?>" class="item">
+                     <h3><?php echo $item->getName(); ?></h3>
+                     <p>Price: R <?php echo $item->getPrice(); ?></p>
+                  </button >
+                  <?php
             }
             ?>
         </form>
     </section>
+
+
 
     <form action="./views/checkout.php" method="get" class="checkout">
         <input type="hidden" name="subTotal" value="sub total amount">
