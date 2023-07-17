@@ -7,8 +7,6 @@ error_reporting(E_ALL);
 
 session_start();
 
-
-
 // redirect back to index if payment button is selected
 if (isset($_GET['payment'])) {
     session_unset();
@@ -37,26 +35,48 @@ if (isset($_GET['payment'])) {
     <h2>Items Purchased:</h2>
 
     <ul>
-        <li>item 1</li>
-        <li>item 2</li>
-        <li>item 3</li>
+        <?php
+        if (isset($_SESSION['order'])) {
+            foreach ($_SESSION['order'] as $item) {
+                echo "<li>" . $item['name'] . "</li>";
+            }
+        }
+        ?>
     </ul>
 
     <hr>
 
     <h2>
-        Amount: R<span>0.00</span>
+        Amount: R<span>
+            <?php echo isset($_SESSION['orderTotal']) ? $_SESSION['orderTotal'] : '0.00'; ?>
+        </span>
         <br>
-        VAT Amount: R <span>0.00</span>
+        VAT Amount: R <span>
+            <?php echo isset($_SESSION['orderTotal']) ? calculateVat($_SESSION['orderTotal']) : '0.00'; ?>
+        </span>
         <br>
         <br>
-        Subtotal for all items: R<span>0.00</span>
+        Subtotal for all items: R<span>
+            <?php echo isset($_SESSION['orderTotal']) ? $_SESSION['orderTotal'] : '0.00'; ?>
+        </span>
     </h2>
 
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get">
+    <form action="./addItem.php" method="post">
         <button style="background-color:red" type="submit" name="payment">Pay with card</button>
         <button style="background-color:cornflowerblue" type="submit" name="payment">Pay with cash</button>
     </form>
+
+    <?php
+    // Function to calculate VAT
+    // to be put in calculate vat
+    function calculateVat($amount)
+    {
+        $vatPercentage = 15;
+        $vatAmount = ($amount * $vatPercentage) / 100;
+        $vatInclusiveTotal = $amount + $vatAmount;
+        return $vatInclusiveTotal;
+    }
+    ?>
 
 </body>
 
