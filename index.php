@@ -7,13 +7,36 @@ error_reporting(E_ALL);
 
 session_start();
 
-$_SESSION['order'] = array();
-$_SESSION['orderTotal'] = 0;
+// Initialize session variables if they don't exist
+if (!isset($_SESSION['order'])) {
+    $_SESSION['order'] = array();
+}
 
+if (!isset($_SESSION['orderTotal'])) {
+    $_SESSION['orderTotal'] = 0;
+}
 
 if (isset($_POST['selectedItemValue'])) {
+    require './data/data.php';
 
-    // code to add item
+    $selectedBarcode = $_POST['selectedItemValue'];
+
+    // Find the selected item by matching the barcode
+    $selectedItem = null;
+    foreach ($items as $item) {
+        if ($item['barcode'] == $selectedBarcode) {
+            $selectedItem = $item;
+            break;
+        }
+    }
+
+    if ($selectedItem) {
+        // Add the selected item to the order array
+        $_SESSION['order'][] = $selectedItem;
+
+        // Update the order total
+        $_SESSION['orderTotal'] += $selectedItem['price'];
+    }
 }
 ?>
 
@@ -38,7 +61,8 @@ if (isset($_POST['selectedItemValue'])) {
     <div class="till__display">
         <div>
             <span class="till__console">
-                Amount: R <span>0</span>
+                Amount: R <span><?php echo $_SESSION['orderTotal']; ?>
+                </span>
             </span>
         </div>
     </div>
@@ -48,14 +72,19 @@ if (isset($_POST['selectedItemValue'])) {
     <section>
         <form class="items" action=" <?php $_SERVER['PHP_SELF'] ?>" method="post">
             <?php
-            for ($i = 0; $i < 3; $i++) {
+            require './data/data.php';
+            foreach ($items as $item) {
                 ?>
-                <button type="submit" name="selectedItemValue" value="" class="item">
+
+                <button type="submit" name="selectedItemValue" value="<?php echo $item['barcode']; ?>" class="item">
                     <h3>
-                        Dummy Item
-                        <?php echo $i; ?>
+                        <?php echo $item['name']; ?>
                     </h3>
+                    <p>Price: R
+                        <?php echo $item['price']; ?>
+                    </p>
                 </button>
+
                 <?php
             }
             ?>
